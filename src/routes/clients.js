@@ -6,7 +6,7 @@ router.get("/getAll", (req, res) => {
   connection.query("SELECT * FROM employees", (err, rows, fields) => {
     if (err) {
       res.status(500).send({
-        message: "Error al obtener los usuarios" + err,
+        message: "Error al obtener los registros" + err,
       });
     } else {
       res.json(rows);
@@ -17,12 +17,12 @@ router.get("/getAll", (req, res) => {
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   connection.query(
-    "SELECT * FROM employees WHERE id = ?",
+    "SELECT * FROM clients WHERE id = ?",
     [id],
     (err, rows, fields) => {
       if (err) {
         res.status(500).send({
-          message: "Error al obtener el usuario" + err,
+          message: "Error al obtener el registros" + err,
         });
       } else {
         res.json(rows[0]);
@@ -32,29 +32,24 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-  const { name, age, country, position, salary } = req.body;
-  const query =
-    "INSERT INTO employees(nameEmployee, ageEmployee, countryEmployee, positionEmployee, salaryEmployee) VALUES (?, ?, ?, ?, ?)";
-  connection.query(
-    query,
-    [name, age, country, position, salary],
-    (err, rows, fields) => {
-      if (err) {
-        res.status(500).send({
-          message: "Error al crear el usuario" + err,
-        });
-      } else {
-        res.json({
-          message: "Usuario creado con éxito",
-        });
-      }
+  const { name, number } = req.body;
+  const query = "INSERT INTO clients(name, number) VALUES (?, ?)";
+  connection.query(query, [name, number], (err, rows, fields) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error al crear el usuario" + err,
+      });
+    } else {
+      res.json({
+        message: "Usuario creado con éxito",
+      });
     }
-  );
+  });
 });
 
 router.put("/:id", (req, res) => {
   const { id } = req.params;
-  const { name, age } = req.body;
+  const { name, number } = req.body;
   const query = `
 		CALL userAddOrEdit(?, ?, ?);
 	`;

@@ -15,6 +15,7 @@ app.get("/api/", (req, res) => {
 });
 
 app.use("/api/employees", require("./routes/employees"));
+app.use("/api/clients", require("./routes/clients"));
 
 // Server
 app.listen(app.get("port"), () => {
